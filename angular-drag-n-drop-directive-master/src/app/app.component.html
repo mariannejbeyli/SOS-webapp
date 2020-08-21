@@ -1,0 +1,94 @@
+
+  <div id="sosSection">
+    <h1>Please enter the SOS URL</h1><br>
+  <input type="text" id="sos" name="sos" required><br>
+  <label id="responseSos" name="responseSos"></label>
+  </div>
+  <div id="choice">
+    <h3>Please choose one of the options below</h3>
+    <select (change)="setXml($event.target.value)" id="xmlOptions" name="xmlOptions" required>
+      <option value="" disabled selected hidden>Select an option</option>
+      <option value="select">Select an existing .xml file</option>
+      <option value="upload">Upload a new .xml file</option>
+    </select>
+    <label id="choiceLabel"></label>
+  </div>
+  <div id="xmlDropdown">
+    <h1>Please select an existing .xml configuration file</h1><br>
+    <select (change)="setDropdownValue($event.target.value)" id="dropdown" name="dropdown">
+      <option value="" disabled selected hidden>Select file</option>
+      <option *ngFor="let file of server_files" value={{file}}>
+        {{file}}
+      </option>
+    </select>
+    <label id="responseXmlSelect"></label>
+  </div>
+  <div id="csv">
+    <h2 >Choose a .csv file</h2>
+    <div class="container" appDnd (fileDropped)="onFileDropped($event,'csv')">
+      <input type="file" #fileDropRef id="fileDropRef" name="fileDropRef" accept=".csv" (change)="fileBrowseHandler($event.target.files,'csv')" />
+      <img src="assets/img/dnd/ic-upload-file.svg" alt="">
+      <h3>Drag and drop file here</h3>
+      <h3>or</h3>
+      <label for="fileDropRef">Browse for file</label>
+    </div>
+    <label id="responseCsv"></label>
+    <div class="files-list">
+      <div class="single-file" *ngIf="files.length > 0 ">
+        <img src="assets/img/dnd/ic-file.svg" width="45px" alt="files[0]">
+        <div class="info">
+          <h4 class="name">
+            {{ files[0]?.name }}
+          </h4>
+          <p class="size">
+            {{ formatBytes(files[0]?.size) }}
+          </p>
+          <app-progress [progress]="files[0]?.progress"></app-progress>
+        </div>
+        <img src="assets/img/dnd/ic-delete-file.svg" class="delete" width="20px" alt="files[0]" (click)="deleteFile('csv')">
+      </div>
+    </div>
+    
+  </div>
+  <div id="xml">
+    <h2 >Upload a new .xml configuration file</h2>
+    <div class="container" appDnd (fileDropped)="onFileDropped($event,'xml')">
+      <input type="file" #xmlDropRef id="xmlDropRef" name="xmlDropRef" accept=".xml" (change)="fileBrowseHandler($event.target.files,'xml')" />
+      <img src="assets/img/dnd/ic-upload-file.svg" alt="">
+      <h3>Drag and drop file here</h3>
+      <h3>or</h3>
+      <label for="xmlDropRef">Browse for file</label>
+    </div>
+    <label id="responseXmlUpload"></label>
+    <div class="files-list">
+      <div class="single-file" *ngIf="xml.length > 0 ">
+        <img src="assets/img/dnd/ic-file.svg" width="45px" alt="xml[0]">
+        <div class="info">
+          <h4 class="name">
+            {{ xml[0]?.name }}
+          </h4>
+          <p class="size">
+            {{ formatBytes(xml[0]?.size) }}
+          </p>
+          <app-progress [progress]="xml[0]?.progress"></app-progress>
+        </div>
+        <img src="assets/img/dnd/ic-delete-file.svg" class="delete" width="20px" alt="xml[0]" (click)="deleteFile('xml')">
+      </div>
+    </div>
+    
+  </div>
+  
+  <div>
+    <button class="uploadB" type="submit" (click)="uploadData()">Upload</button>
+  </div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SosImportConfiguration xsi:schemaLocation="https://raw.github.com/52North/sos-importer/master/52n-sos-importer-bindings/src/main/xsd/import-configuration.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://52north.org/sensorweb/sos/importer/0.4/">
+  <DataFile referenceIsARegularExpression="false">
+    <LocalFile>
+      <Path>/Users/mariannejbeyli/Desktop/angular_projects/files-upload/csv/Table_MTO_MZAAR_03_03_2020.csv</Path>
+      <Encoding>UTF-8</Encoding>
+    </LocalFile>
+  </DataFile>
+  <SosMetadata>
+    <URL>http://localhost:8080/sos-webapp/service</URL>
+    <Offering generate="true"/>
+    <Version>2.0.0</Version>
+    <Binding>POX</Binding>
+  </SosMetadata>
+  <CsvMetadata>
+    <ColumnAssignments>
+      <Column>
+        <Number>0</Number>
+        <Type>DATE_TIME</Type>
+        <Metadata>
+          <Key>GROUP</Key>
+          <Value>1</Value>
+        </Metadata>
+        <Metadata>
+          <Key>PARSE_PATTERN</Key>
+          <Value>yyyy-MM-dd HH:mm:ss</Value>
+        </Metadata>
+        <Metadata>
+          <Key>TYPE</Key>
+          <Value>COMBINATION</Value>
+        </Metadata>
+        <Metadata>
+          <Key>TIME_ZONE</Key>
+          <Value>0</Value>
+        </Metadata>
+      </Column>
+      <Column>
+        <Number>1</Number>
+        <Type>MEASURED_VALUE</Type>
+        <Metadata>
+          <Key>TYPE</Key>
+          <Value>NUMERIC</Value>
+        </Metadata>
+        <RelatedFOI>
+          <IdRef>foi-331644803</IdRef>
+        </RelatedFOI>
+        <RelatedObservedProperty>
+          <IdRef>obsprop2130687974</IdRef>
+        </RelatedObservedProperty>
+        <RelatedSensor>
+          <IdRef>sensor2610222</IdRef>
+        </RelatedSensor>
+        <RelatedUnitOfMeasurement>
+          <IdRef>uom29877</IdRef>
+        </RelatedUnitOfMeasurement>
+      </Column>
+      <Column>
+        <Number>2</Number>
+        <Type>MEASURED_VALUE</Type>
+        <Metadata>
+          <Key>TYPE</Key>
+          <Value>NUMERIC</Value>
+        </Metadata>
+        <RelatedFOI>
+          <IdRef>foi321731027</IdRef>
+        </RelatedFOI>
+        <RelatedObservedProperty>
+          <IdRef>obsprop-79171417</IdRef>
+        </RelatedObservedProperty>
+        <RelatedSensor>
+          <IdRef>sensor2610222</IdRef>
+        </RelatedSensor>
+        <RelatedUnitOfMeasurement>
+          <IdRef>uom29858</IdRef>
+        </RelatedUnitOfMeasurement>
+      </Column>
+    </ColumnAssignments>
+    <DecimalSeparator>.</DecimalSeparator>
+    <FirstLineWithData>4</FirstLineWithData>
+    <Parameter>
+      <CommentIndicator>#</CommentIndicator>
+      <ColumnSeparator>,</ColumnSeparator>
+      <TextIndicator>"</TextIndicator>
+    </Parameter>
+    <UseHeader>false</UseHeader>
+  </CsvMetadata>
+  <AdditionalMetadata>
+    <Metadata>
+      <Key>IMPORT_STRATEGY</Key>
+      <Value>SingleObservation</Value>
+    </Metadata>
+    <Sensor>
+      <GeneratedResource>
+        <ID>sensor2610222</ID>
+        <Number>2</Number>
+        <URI useAsPrefix="false"/>
+        <ConcatString/>
+      </GeneratedResource>
+    </Sensor>
+    <ObservedProperty>
+      <ManualResource>
+        <ID>obsprop2130687974</ID>
+        <URI>vltg</URI>
+        <Name>voltage</Name>
+      </ManualResource>
+    </ObservedProperty>
+    <ObservedProperty>
+      <ManualResource>
+        <ID>obsprop-79171417</ID>
+        <URI>temp</URI>
+        <Name>temperature</Name>
+      </ManualResource>
+    </ObservedProperty>
+    <FeatureOfInterest>
+      <GeneratedSpatialResource>
+        <ID>foi-331644803</ID>
+        <Number>1</Number>
+        <URI useAsPrefix="false"/>
+        <ConcatString>baterie</ConcatString>
+        <Position>
+          <Alt unit="meters">2485.0</Alt>
+          <EPSGCode>4326</EPSGCode>
+          <Lat unit="deg">33.9913</Lat>
+          <Long unit="deg">35.8429</Long>
+        </Position>
+      </GeneratedSpatialResource>
+    </FeatureOfInterest>
+    <FeatureOfInterest>
+      <GeneratedSpatialResource>
+        <ID>foi321731027</ID>
+        <Number>2</Number>
+        <URI useAsPrefix="false"/>
+        <ConcatString>temperature</ConcatString>
+        <Position>
+          <Alt unit="meters">2485.0</Alt>
+          <EPSGCode>4326</EPSGCode>
+          <Lat unit="deg">33.9913</Lat>
+          <Long unit="deg">35.8429</Long>
+        </Position>
+      </GeneratedSpatialResource>
+    </FeatureOfInterest>
+    <UnitOfMeasurement>
+      <GeneratedResource>
+        <ID>uom29877</ID>
+        <Number>1</Number>
+        <URI useAsPrefix="false"/>
+        <ConcatString/>
+      </GeneratedResource>
+    </UnitOfMeasurement>
+    <UnitOfMeasurement>
+      <GeneratedResource>
+        <ID>uom29858</ID>
+        <Number>2</Number>
+        <URI useAsPrefix="false"/>
+        <ConcatString/>
+      </GeneratedResource>
+    </UnitOfMeasurement>
+  </AdditionalMetadata>
+</SosImportConfiguration>
