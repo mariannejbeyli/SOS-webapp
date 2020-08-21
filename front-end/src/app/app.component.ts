@@ -1,5 +1,4 @@
 import { Component, ViewChild, ElementRef } from "@angular/core";
-import { element } from 'protractor';
 
 @Component({
   selector: "app-root",
@@ -14,23 +13,15 @@ export class AppComponent {
   xml: any[] = [];
   xmlName : string;
   server_files :string[] = [];
-  
-  
   select = false;
   upload = false;
   dropdownValue = "";
   sos = "";
 
   ngOnInit(){
-    
-
     document.getElementById("xmlDropdown").hidden=true;
     document.getElementById("xml").hidden=true;
-    fetch("http://localhost:3000/xml").then(response => response.json().then(data => {
-      this.server_files = data.data;
-    }));
-   
-    
+    fetch("http://localhost:3000/xml").then(response => response.json()).then(data => this.server_files = data.data);
   }
 
   /**
@@ -194,6 +185,11 @@ export class AppComponent {
     }
   }
 
+  getResult(){
+    let response = fetch("http://localhost:3000/result").then(result => result.json().then(data => alert(data.message)));
+
+  }
+
   async uploadData(){
     this.setSOS();
     if (this.select){
@@ -203,8 +199,20 @@ export class AppComponent {
    
   }
 
+affectLabels(result:any){
 
-async postDataTest(){
+  document.getElementById("responseSos").innerHTML = result.message["sos"];
+  document.getElementById("responseCsv").innerHTML = result.message["csv"];
+  if(this.select){
+    document.getElementById("responseXmlSelect").innerHTML = result.message["xml"];
+  }
+  else if (this.upload){
+    document.getElementById("responseXmlUpload").innerHTML = result.message["xml"];
+  }
+}
+
+
+postDataTest(){
   if (this.xmlName != "" && this.fileName != "" && this.sos != ""){
     var formData: FormData = new FormData();
     var response:any;
@@ -212,34 +220,26 @@ async postDataTest(){
     formData.append("sos",this.sos);
     if (this.select){
       formData.append("xmlSelect",this.xmlName);
-      response = await fetch("http://localhost:3000/select",{
+      response = fetch("http://localhost:3000/select",{
        method: 'POST',
        body: formData
-     })
+     }).then(response => response.json().then(result => this.affectLabels(result)))
     }
     else{
       formData.append("xmlUpload",this.xml[0]);
-      response = await fetch("http://localhost:3000/upload",{
+      fetch("http://localhost:3000/upload",{
        method: 'POST',
        body: formData
-     })
+     }).then(response => response.json().then(result => this.affectLabels(result)))
     }
-    let result = await response.json();
-    document.getElementById("responseSos").innerHTML = result.message["sos"];
-    document.getElementById("responseCsv").innerHTML = result.message["csv"];
-    if(this.select){
-      document.getElementById("responseXmlSelect").innerHTML = result.message["xml"];
-    }
-    else if (this.upload){
-      document.getElementById("responseXmlUpload").innerHTML = result.message["xml"];
-    }
+
+    this.getResult();
+    
   }
   else {
     alert("You have not entered all required data");
   }
-    
 
   }
-  
 
 }

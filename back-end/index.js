@@ -8,6 +8,7 @@ var fs = require("fs"),
     parseString = require("xml2js").parseString,
     xml2js = require("xml2js");
 const app = express();
+fileXml = '';
 
 // enable files upload
 app.use(fileUpload({
@@ -22,6 +23,34 @@ app.use(morgan('dev'));
 
 //start app 
 const port =  3000;
+result = "Import unsuccessful";
+
+function execute(xmlF,res){
+    const {spawn} = require("child_process");
+    const sosc = spawn("java",["-jar","./52n-sos-importer-feeder-0.4.2-bin.jar","-c","./xml/"+xmlF]);
+    const grep = spawn("grep", ["New observations in SOS"]);
+    sosc.stdout.pipe(grep.stdin);
+
+    grep.stdout.on("data", data => {
+        result = data.toString();
+        console.log(result)
+    });
+        
+    grep.stderr.on("data", data => {
+        result = "Unsuccesful import";
+        console.log(`stderr: ${data}`);
+    });
+        
+    grep.on('error', (error) => {
+        result = "Unsuccesful import";
+        console.log(`error: ${error.message}`);
+    });
+        
+    grep.on("close", code => {
+        console.log(`child process exited with code ${code}`);
+        res.send({message:result});
+    });
+}
 
 function configXML(csvF, xmlF, sos){
     fs.readFile("./xml/"+xmlF, "utf-8", function(err, data) {
@@ -41,30 +70,8 @@ function configXML(csvF, xmlF, sos){
         if (err) console.log(err);
 
         console.log("Successfully written our updated xml to file\n" + xmlF +"\n"+csvF + "\n" + sos);
-       
-        });
-       //TODO alert success message on angular frontend
-        var spawn = require('child_process').spawn;
-        var sosc = spawn('java', ["-jar","./52n-sos-importer-feeder-0.4.2-bin.jar","-c","./xml/"+xmlF]);
-        var grep = spawn('grep', ['to do']);
-
-        sosc.stdout.pipe(grep.stdin);
-        grep.stdout.on("data", data => {
-            console.log(`${data}`);
-        });
         
-        grep.stderr.on("data", data => {
-            console.log(`stderr: ${data}`);
         });
-        
-        grep.on('error', (error) => {
-            console.log(`error: ${error.message}`);
-        });
-        
-        grep.on("close", code => {
-            console.log(`child process exited with code ${code}`);
-        }); 
-
     });
     });
 
@@ -72,16 +79,21 @@ function configXML(csvF, xmlF, sos){
 
 app.get('/xml', (req, res) => {
     const path = require('path');
-const fs = require('fs');
-const directoryPath = path.join(__dirname, 'xml');
-fs.readdir(directoryPath, function (err, files) {
-    if (err) {
-        return console.log('Unable to scan directory: ' + err);
-    }
-    
-   res.send({data:files});
-    });
+    const fs = require('fs');
+    const directoryPath = path.join(__dirname, 'xml');
+    fs.readdir(directoryPath, function (err, files) {
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        }
+    res.send({data: files});
+        });
 });
+
+app.get('/result',(req,res)=> {
+    execute(fileXml,res);
+    //res.send({message : result});
+
+})
 
 
 app.post('/upload', async (req, res) => {
@@ -97,16 +109,17 @@ app.post('/upload', async (req, res) => {
             let sosInstance = req.body.sos;
             let xmlFile = req.files.xmlUpload;
             let csvFile = req.files.csv;
-
+            fileXml = xmlFile.name;
             xmlFile.mv('./xml/' + xmlFile.name);
             csvFile.mv('./csv/' + csvFile.name);
 
-            configXML(csvFile.name, xmlFile.name, sosInstance);
+            
             res.send({
                 status: true,
                 message: {sos:'SOS instance: ' + sosInstance, csv:"File uploaded: "+csvFile.name, xml:"File uploaded: "+xmlFile.name},
                 
             });
+            configXML(csvFile.name, xmlFile.name, sosInstance);
         }
     } catch (err) {
         res.status(500).send(err);
@@ -126,7 +139,7 @@ app.post('/select', async (req, res) => {
             sosInstance = req.body.sos;
             xmlFile = req.body.xmlSelect;
             csvFile = req.files.csv;
-            
+            fileXml = xmlFile;
             csvFile.mv('./csv/' + csvFile.name);
             configXML(csvFile.name, xmlFile, sosInstance);
             //send response

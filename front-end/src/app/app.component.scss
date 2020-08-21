@@ -53,7 +53,7 @@
 
 #xml{
   position:absolute;
-  right:100px;
+  right: 100px;
   top: 150px;
   width:466px;
   height:447px;
@@ -148,7 +148,7 @@
 
 #xmlDropdown{
   position:absolute;
-  left:715px;
+  right:127px;
   top: 150px;
   h1 {
     font-size: 20px;
@@ -172,12 +172,13 @@
 
 #choice{
   position:absolute;
-  left:715px;
+  right:220px;
   top: 50px;;
   h1 {
     font-size: 20px;
     font-weight: 600;
     color: black;
+    position: relative;
   }
   #xmlOptions{
     width: 308px;
